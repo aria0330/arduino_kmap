@@ -233,7 +233,7 @@ protected:
 				result.insert(result.begin()+temp+2, '(');
 				temp ++;
 			}
-			else if ( temp > 0 (isalpha(result[temp-1]) || result[temp-1] == '\'' ) && isalpha(result[temp] ) 
+			else if ( temp > 0 && (isalpha(result[temp-1]) || result[temp-1] == '\'' ) && isalpha(result[temp] ) 
 				&& result[temp-1] != '(' && result[temp-1] != '+' && result[temp] != ')')
 			{
 				result.insert(result.begin()+temp,'+');

@@ -5,7 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <iomanip>
-#include <conio.h>
+//#include <conio.h>
 #include <string>
 
 using namespace std;
@@ -29,7 +29,7 @@ protected:
 
 	void guideWin (short cursor);
 	int readInt (int &count, bool negative ); 
-	void getPos (vector<int> &pos, string name);
+	void getPos (vector<int> &pos, String name_pos);
 	void setTerms (vector<int> ones, vector<vector<int> > &terms);  
 	
 	setKmap(): hasEnteredType(false) {}
@@ -44,54 +44,89 @@ protected:
 
 void setKmap ::guideWin (short cursor)
 {
-	cout<<"This program has devolped to solve Karnaugh map with any number of variables\n\n"
-		<<"Solving steps:\n";
-		if(cursor == 1) cout<<"==>    "; else cout<<"       ";
-		cout <<"1- Enter k-map type (Number of variables)\n";
-		
-		if(cursor == 2) cout<<"==>    "; else cout<<"       ";
-		cout<<"2- Enter one's positions (-1 for stopping)\n";
-		
-		if(cursor == 3) cout<<"==>    "; else cout<<"       ";
-		cout<<"3- Enter don't care positions (-1 for stopping)\n";
-		
-		if(cursor == 4) cout<<"==>    "; else cout<<"       ";
-		cout<<"4- Choose result's type (SOP or POS):\n";
+//	cout<<"This program has devolped to solve Karnaugh map with any number of variables\n\n"
+//		<<"Solving steps:\n";
+		Serial.println("This program has devolped to solve Karnaugh map with any number of variables");
+		Serial.println("");
+		Serial.println("");
+		Serial.println("Solving steps:");
+
+		//if(cursor == 1) cout<<"==>    "; else cout<<"       ";
+		if(cursor == 1) Serial.println("==>    ");
+		else Serial.println("       ");
+		//cout <<"1- Enter k-map type (Number of variables)\n";
+		Serial.println("1- Enter k-map type (Number of variables)");
+
+		// if(cursor == 2) cout<<"==>    "; else cout<<"       ";
+		if(cursor == 2) Serial.println("==>    ");
+		else Serial.println("       ");
+
+		// cout<<"2- Enter one's positions (-1 for stopping)\n";
+		Serial.println("2- Enter one's positions (-1 for stopping)");
+
+		// if(cursor == 3) cout<<"==>    "; else cout<<"       ";
+		if(cursor == 3) Serial.println("==>    ");
+		else Serial.println("       ");
+		// cout<<"3- Enter don't care positions (-1 for stopping)\n";
+		Serial.println("3- Enter don't care positions (-1 for stopping)");
+
+		// if(cursor == 4) cout<<"==>    "; else cout<<"       ";
+		if(cursor == 4) Serial.println("==>    ");
+		else Serial.println("       ");
+		// cout<<"4- Choose result's type (SOP or POS):\n";
+		Serial.println("4- Choose result's type (SOP or POS):");
 
 
-		if(cursor == 5) cout<<"==>    "; else cout<<"       ";
-		cout<<"5- Solving of your k-map\n\n";
+		// if(cursor == 5) cout<<"==>    "; else cout<<"       ";
+		if(cursor == 5) Serial.println("==>    ");
+		else Serial.println("       ");		
+		// cout<<"5- Solving of your k-map\n\n";
+		Serial.println("5- Solving of your k-map");
+		Serial.println("");
+
 
 		//show type
-		if(hasEnteredType) cout<<"Type : "<<type<<endl;
-		
+		//if(hasEnteredType) cout<<"Type : "<<type<<endl;
+		if(hasEnteredType){
+			Serial.print("Type : ");
+			Serial.println(type);
+		}
+
 		//show ones
 		if(ones.size() > 0) 
 		{
-			cout<<"Ones :";
+			//cout<<"Ones :";
+			Serial.print("Ones : ");
 			for(int temp = 0; temp < ones.size(); temp++)
 			{
-				cout<<ones[temp];
+				//cout<<ones[temp];
+				Serial.print(ones[temp]);
 				if(temp < ones.size() -1 )
-					cout<<",";
+					//cout<<",";
+					Serial.print(",");
 			}
-			cout<<endl;
+			//cout<<endl;
+			Serial.println("");
 		}
 
 		//show don't care
 		if(dCare.size() > 0) 
 		{
-			cout<<"Don't Care :";
+			//cout<<"Don't Care :";
+			Serial.print("Don't Care :");
 			for(int temp = 0; temp < dCare.size(); temp++)
 				{
-					cout<<dCare[temp];
+					//cout<<dCare[temp];
+					Serial.print(dCare[temp]);
 					if(temp < dCare.size() -1 )
-					cout<<",";
+					//cout<<",";
+					Serial.print(",");
 				}
-			cout<<endl;
+			Serial.println("");
 		}
 
-		cout<<"*******************************************************************************\n";
+		//cout<<"*******************************************************************************\n";
+		Serial.println("*******************************************************************************");
 }//end guide windows
 
 /***
@@ -102,6 +137,7 @@ void setKmap ::guideWin (short cursor)
 *but default case is reading both 
 *count read digit's count
 */
+/*
 int setKmap :: readInt (int &count, bool negative = true) 
 {
 	char tempChar;  //for reading characters
@@ -168,7 +204,7 @@ int setKmap :: readInt (int &count, bool negative = true)
 
 }//end readInt
 
-
+*/
 /***
 *	getpos (get positions)
 *   is prompting for positions of name sending as  
@@ -178,9 +214,9 @@ int setKmap :: readInt (int &count, bool negative = true)
 *   It is stilling reading until read -1
 */
 
-void setKmap :: getPos (vector<int> &pos, string name)
+void setKmap :: getPos (vector<int> &pos, String name_pos)
 {
-			int position; //for reading positions
+			int position_pos; //for reading positions
 			int count ;    //position count digits
 
 			while(true) //still reading until read -1
@@ -188,29 +224,39 @@ void setKmap :: getPos (vector<int> &pos, string name)
 			
 				count = 0;
 				//prompting for one's positions
-			cout<<"Please, enter " << name << "'s position (-1 for stopping) : ";
-				
+			//cout<<"Please, enter " << name << "'s position (-1 for stopping) : ";
+				Serial.print("Please, enter ");
+				Serial.print(name_pos);
+				Serial.print("'s position (q for stopping) : ");
+
 				//reading one by one
-				position = readInt ( count ) ;
+				//position = readInt ( count ) ;
+				if (Serial.available())
+  					{
+      					position_pos=(int)(Serial.read())-48;
+    				}
 
 				//check position locations
 				//as it is locating in this type of k-map
-				if(position != -1 && position < pow(2.0,type)) 
+				if(position_pos != (113-48) && position_pos < pow(2.0,type)) 
 					{
-						pos.push_back(position); //save position
-						cout<<endl;              //going to next line
+						pos.push_back(position_pos); //save position
+						//cout<<endl;              //going to next line
+						Serial.println("");
 					}
 				
 				//breaking number
-				else if(position == -1)
+				//else if(position == -1)
+				else if(position_pos == (113-48))//ascii q ==113	
 						break;
 
 				//other wrong cases
 				else 
 				{
 					//remove inputs and prompting sentense 
-					for(int temp = 0; temp < count+55; temp++)
-						cout<<"\b \b"; //remove a digit
+					//for(int temp = 0; temp < count+55; temp++)
+					//	cout<<"\b \b"; //remove a digit
+					Serial.println("wrong inputs");
 
 				}
 			}//end while
