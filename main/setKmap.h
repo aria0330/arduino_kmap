@@ -231,10 +231,10 @@ void setKmap :: getPos (vector<int> &pos, String name_pos)
 
 				//reading one by one
 				//position = readInt ( count ) ;
-				if (Serial.available())
+				while (Serial.available()==0)
   					{
-      					position_pos=(int)(Serial.read())-48;
     				}
+                position_pos=(int)(Serial.read())-48;
 
 				//check position locations
 				//as it is locating in this type of k-map

@@ -69,10 +69,10 @@ void Kmap ::invokeKmap()
     //type = readInt( temp = 0, false); //read type as an positive integer number
     //not use readInt function
     //get number from serial
-    if (Serial.available())
+    while (Serial.available()==0)
     {
-      type=(int)(Serial.read())-48;
     }
+      type=(int)(Serial.read())-48;
 
     
     if(type > 4)
@@ -103,10 +103,10 @@ void Kmap ::invokeKmap()
     
     do
     {
-    if (Serial.available())
+    while (Serial.available()==0)
     {
-      tempChar=(Serial.read());
     }    
+      tempChar=(Serial.read());
     
     if(tempChar == 49)
     {
@@ -159,10 +159,10 @@ void Kmap ::invokeKmap()
     Serial.println();
     
     //tempChar = getch ();       //reading a digit for finishing minimize
-    if (Serial.available())
+    while (Serial.available()==0)
     {
-      tempChar=(Serial.read());
     }    
+      tempChar=(Serial.read());
 
     if(tempChar == 27) break;  //break after esc
     else
