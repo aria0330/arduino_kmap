@@ -138,24 +138,27 @@ void Kmap ::invokeKmap()
     
     for(int temp = 0; temp < filterResults.size(); temp++)
     {
-      if(filterResults.size() > 1) 
+      if(filterResults.size() > 1) {
         //cout<<endl<<temp+1<<" - ";
         Serial.println();
         Serial.print(temp+1);
         Serial.print(" - ");
+      }
       if(SOP == false) convSopToPos(filterResults[temp]);
 
-      for(int temp1 = 0; temp1 < filterResults[temp].size(); temp1++) 
+      for(int temp1 = 0; temp1 < filterResults[temp].size(); temp1++) {
       //cout<<filterResults[temp][temp1];
       Serial.print(filterResults[temp][temp1]);
+      }
     }
 
     }
-    else
+    else{
       //cout<<"Minimization = "<<result[0]<<endl;
     Serial.print("Minimization = ");
     Serial.println(result[0]);
         //cout<<endl; //going to next line
+    }
     Serial.println();
     
     //tempChar = getch ();       //reading a digit for finishing minimize
