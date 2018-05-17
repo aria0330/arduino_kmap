@@ -25,9 +25,16 @@ class  ConverteTerms
 	vector<int> termToPos (vector<char> term, int &type);
 	vector <char> extract(vector<char> &terms, int &type);
 	void compTerm(vector<char> &part,vector<char> &terms, int &type, int &pos);
-
+  int pow_my(int x,int n);
 };
-
+int ConverteTerms :: pow_my(int x,int n)
+  {
+      if(n==0)
+        {
+          return 1;
+        }
+      return x*pow_my(x,n-1);
+  }
 //complete terms to be a full-minterm terms
 void ConverteTerms :: compTerm(vector<char> &part,vector<char> &terms, int &type, int &pos)
 	{
@@ -132,7 +139,7 @@ vector<int> ConverteTerms :: termToPos (vector<char> term, int &type)
 		}
 		else if ( isalpha(term[temp] ) ) //undashed digits
 		{
-			pos += pow(2.0, weight);
+			pos += pow_my(2,weight);
 		}
 
 		//seperators
