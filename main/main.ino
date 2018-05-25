@@ -30,14 +30,15 @@ class Kmap : public FilterKmapTerms, public SOPtoPOS
 private:
     int temp, temp1, temp2, temp3; //temprature variables
     
-  void invokeKmap();
   
 public:
   
   Kmap () 
   {
-      invokeKmap();
   }
+ vector<char>  invokeKmap(int type_in,vector<int> ones_in,vector<int> dcares_in);
+
+
 };//end kmap
 
 /***
@@ -48,83 +49,22 @@ public:
   4- Minimizing and getting results
 */
 
-void Kmap ::invokeKmap()
+vector<char> Kmap ::invokeKmap(int type_in,vector<int> ones_in,vector<int> dcares_in)
   {
     char tempChar;           //temprature character 
     vector<char>result;      //Saving results
     vector<vector<char>> filterResults; //results after being filtered
-  do
-  {
     
-    //first step prompting for type
-
-    //system("cls");  //clear windows
-    guideWin(1);     //invoke guide windows
-    
-    //prompting for type
-    //cout<<"Please, enter your k-map type (Variables number, Maximum 26):";
-    Serial.println("Please, enter your k-map type (Variables number, Maximum 4):");
-    do
-    {
-    //type = readInt( temp = 0, false); //read type as an positive integer number
-    //not use readInt function
-    //get number from serial
-    while (Serial.available()==0)
-    {
-    }
-      type=(int)(Serial.read())-48;
-
-    
-    if(type > 4)
-        Serial.println("Please, enter your k-map type (Variables number, Maximum 4):");
-
-    }while(type > 4);
+    type=type_in;
     hasEnteredType = true;
-
-    //second step prompting for ones
-//    system("cls");  //clear windows
-    guideWin(2);     //reinvoke guide windows
-    getPos(ones, "one");           //getOnes
-
-    //third step prompting for don't care
-//    system("cls");  //clear windows
-    guideWin(3);     //reinvoke guide windows
-    getPos(dCare, "don't care");   //get don't care
-
-    //fourth step prompting for don't care
-//    system("cls");  //clear windows
-    guideWin(4);     //reinvoke guide windows
-    //cout<<"Choose Result's type:\n"
-    //  <<"1-Some of product.\n"
-    //  <<"2-Product of some.\n";
-    Serial.println("Choose Result's type:");
-    Serial.println("1-Some of product.\n");
-    Serial.println("2-Product of some.\n");
+  for(int i=0;i<ones_in.size();i++){
+    ones.push_back(ones_in[i]);
+    }
+  for(int i=0;i<dcares_in.size();i++){
+    dCare.push_back(dcares_in[i]);
+    }
     
-    do
-    {
-    while (Serial.available()==0)
-    {
-    }    
-      tempChar=(Serial.read());
-    
-    if(tempChar == 49)
-    {
-      SOP = true;
-    }
-    else if(tempChar == 50)
-    {
-      SOP = false;
-    }
-    else
-    {
-      Serial.println("wrong input");
-    }
-
-    }while(tempChar != 49 && tempChar != 50);
-    //fifth step: getting results
-//    system("cls");  //clear windows
-    guideWin(5);     //reinvoke guide windows
+    SOP=true;
     result = minimize(ones, dCare); //Solving by minimizing
     
     if( result.size() != 1 ||   //not full or empty maps
@@ -132,51 +72,19 @@ void Kmap ::invokeKmap()
     {
       filterResults.clear();
       filterResults =  filter(result,ones); //filter result from unessential terms
-      //print results
-    //cout<<"Minimization = ";
-    Serial.print("Minimization = ");
-    
+      result.clear();
     for(int temp = 0; temp < filterResults.size(); temp++)
     {
-      if(filterResults.size() > 1) {
-        //cout<<endl<<temp+1<<" - ";
-        Serial.println();
-        Serial.print(temp+1);
-        Serial.print(" - ");
-      }
-      if(SOP == false) convSopToPos(filterResults[temp]);
-
       for(int temp1 = 0; temp1 < filterResults[temp].size(); temp1++) {
       //cout<<filterResults[temp][temp1];
-      Serial.print(filterResults[temp][temp1]);
+      //Serial.print(filterResults[temp][temp1]);
+      result.push_back(filterResults[temp][temp1]);
       }
     }
 
     }
-    else{
-      //cout<<"Minimization = "<<result[0]<<endl;
-    Serial.print("Minimization = ");
-    Serial.println(result[0]);
-        //cout<<endl; //going to next line
-    }
-    Serial.println();
-    
-    //tempChar = getch ();       //reading a digit for finishing minimize
-    while (Serial.available()==0)
-    {
-    }    
-      tempChar=(Serial.read());
 
-    if(tempChar == 27) break;  //break after esc
-    else
-    {
-      //empty type, ones and dCare
-      ones.clear();
-      dCare.clear();
-      hasEnteredType = false;
-    }
-  }while(true);
-  
+  return result;
 }//end invoke kmap
 
 
@@ -185,5 +93,41 @@ void Kmap ::invokeKmap()
 
 void loop() {
   // put your main code here, to run repeatedly:
+  vector<char> result;
+  vector<int> ones_input,dCare_input;
+  int tmp;
+  
+      while(true) //still reading until read q
+      {
+      
+        Serial.print("Please, enter one's position (100 for stopping) : ");
+        while (Serial.available()==0)
+            {
+            }
+                tmp=(int) Serial.parseInt();
+        if(tmp != (100)) 
+          {
+            ones_input.push_back(tmp); //save position
+            Serial.println(tmp);
+            Serial.println("");
+          }
+        else 
+        {
+          Serial.println();
+          break;
+        }
+      }//end while
+
+
+  
   Kmap k1;
+  result = k1.invokeKmap(4,ones_input,dCare_input);
+
+  Serial.print("result : ");
+
+  for(int i=0;i<result.size();i++){
+      Serial.print(result[i]);
+    }
+    Serial.println();
+  
   }
